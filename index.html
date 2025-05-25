@@ -1,567 +1,473 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absensi TQS-KHS 2025/2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        :root {
-            --primary: #4361ee;
-            --secondary: #3f37c9;
-            --accent: #4895ef;
-            --dark: #1b263b;
-            --light: #f8f9fa;
-            --success: #4cc9f0;
-            --warning: #f72585;
-            --gray: #adb5bd;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f5f7fa;
-            color: var(--dark);
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 20px 0;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-        
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .card-title {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-        
-        select, input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            transition: border 0.3s ease;
-        }
-        
-        select:focus, input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-        }
-        
-        .btn {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .btn:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-        
-        .btn-outline:hover {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        
-        th {
-            background-color: var(--primary);
-            color: white;
-            font-weight: 500;
-        }
-        
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        
-        tr:hover {
-            background-color: #f1f3ff;
-        }
-        
-        .status-select {
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        .present {
-            background-color: #e6f7ee;
-            color: #28a745;
-        }
-        
-        .absent {
-            background-color: #fdecea;
-            color: #dc3545;
-        }
-        
-        .sick {
-            background-color: #fff8e6;
-            color: #ffc107;
-        }
-        
-        .permit {
-            background-color: #e6f3ff;
-            color: #17a2b8;
-        }
-        
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .tab {
-            padding: 12px 20px;
-            cursor: pointer;
-            font-weight: 500;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-        }
-        
-        .tab.active {
-            color: var(--primary);
-            border-bottom: 3px solid var(--primary);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .time-badge {
-            display: inline-block;
-            background: var(--accent);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-left: 10px;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-            
-            header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .card {
-                padding: 15px;
-            }
-            
-            th, td {
-                padding: 10px;
-                font-size: 0.9rem;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Absensi MAHAD AL FARUQ ASSALAFY KALIBAGOR</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #355c7d;
+      --secondary: #6c5b7b;
+      --accent: #f67280;
+      --bg: #f8f8f8;
+      --white: #fff;
+      --radius: 14px;
+      --shadow: 0 4px 24px rgba(44,62,80,0.1), 0 1.5px 8px rgba(44,62,80,0.03);
+    }
+    body {
+      background: var(--bg);
+      font-family: 'Nunito',sans-serif;
+      margin:0;
+      color:#2c3e50;
+      min-height:100vh;
+    }
+    .container {
+      max-width:950px;
+      margin:32px auto;
+      background:var(--white);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:36px 20px;
+    }
+    h1,h2,h3 {margin-top:0;color:var(--primary);}
+    nav {
+      display:flex;
+      gap:14px;
+      margin-bottom:32px;
+      background:var(--primary);
+      border-radius:var(--radius);
+      overflow:hidden;
+    }
+    nav button {
+      flex:1;
+      background:transparent;
+      border:none;
+      color:var(--white);
+      font-size:1.1em;
+      padding:16px 0;
+      cursor:pointer;
+      transition:.2s;
+      font-weight:700;
+    }
+    nav button.active,nav button:hover {background:var(--accent);color:var(--white);}
+    .hidden {display:none;}
+    .form-section, .dashboard-section, .report-section, .journal-section {margin-top:16px}
+    label {font-weight:600;}
+    select, input[type=text], input[type=password] {
+      padding:8px 10px;
+      border-radius:7px;
+      border:1px solid #ddd;
+      margin-bottom:10px;
+      width:100%;
+      box-sizing:border-box;
+      font-size:1em;
+    }
+    .absen-table, .report-table, .journal-table {
+      width:100%;
+      border-collapse:collapse;
+      margin-top:18px;
+      background:var(--bg);
+    }
+    .absen-table th, .absen-table td,
+    .report-table th, .report-table td,
+    .journal-table th, .journal-table td {
+      border:1px solid #eee;
+      padding:8px 7px;
+      text-align:center;
+    }
+    .absen-table th, .report-table th, .journal-table th {
+      background:var(--secondary);
+      color:var(--white);
+      font-weight:700;
+    }
+    .btn {
+      background:var(--accent);
+      color:#fff;
+      border:none;
+      border-radius:7px;
+      padding:10px 20px;
+      font-weight:700;
+      cursor:pointer;
+      margin-top:12px;
+      transition:.2s;
+    }
+    .btn:active {transform:scale(0.96);}
+    .success {color:green;}
+    .error {color:red;}
+    @media(max-width:750px) {
+      .container {padding:18px 6px;}
+      nav button {font-size:1em;padding:11px 0;}
+      .absen-table,.report-table,.journal-table{font-size:.9em;}
+    }
+    .center{text-align:center}
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>SISTEM ABSENSI KELAS TQS-KHS</h1>
-            <p>Tahun Akademik 2025/2026</p>
-        </header>
-        
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Informasi Pertemuan</h2>
-                <div id="current-date-time"></div>
-            </div>
-            
-            <div class="form-group">
-                <label for="pertemuan">Pertemuan Ke:</label>
-                <select id="pertemuan">
-                    <option value="1">Pertemuan 1</option>
-                    <option value="2">Pertemuan 2</option>
-                    <option value="3">Pertemuan 3</option>
-                    <option value="4">Pertemuan 4</option>
-                    <option value="5">Pertemuan 5</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="waktu">Waktu Pertemuan:</label>
-                <select id="waktu">
-                    <option value="06:15-07:00">06:15-07:00</option>
-                    <option value="08:45-09:30">08:45-09:30</option>
-                    <option value="10:00-10:45">10:00-10:45</option>
-                    <option value="10:45-11:30">10:45-11:30</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="topik">Topik Pembahasan:</label>
-                <input type="text" id="topik" placeholder="Masukkan topik pembahasan">
-            </div>
-        </div>
-        
-        <div class="tabs">
-            <div class="tab active" data-tab="tqs">Kelas TQS Angkatan 05</div>
-            <div class="tab" data-tab="khs">Kelas KHS Angkatan 01</div>
-        </div>
-        
-        <div class="tab-content active" id="tqs-content">
-            <div class="card">
-                <h2 class="card-title">Daftar Mahasiswa TQS Angkatan 05</h2>
-                <table id="tqs-table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Mahasiswa</th>
-                            <th>Status</th>
-                            <th>Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Data akan diisi oleh JavaScript -->
-                    </tbody>
-                </table>
-                
-                <div class="btn-group">
-                    <button id="save-tqs" class="btn">Simpan Absensi TQS</button>
-                    <button id="reset-tqs" class="btn btn-outline">Reset</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="tab-content" id="khs-content">
-            <div class="card">
-                <h2 class="card-title">Daftar Mahasiswa KHS Angkatan 01</h2>
-                <table id="khs-table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Mahasiswa</th>
-                            <th>Status</th>
-                            <th>Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Data akan diisi oleh JavaScript -->
-                    </tbody>
-                </table>
-                
-                <div class="btn-group">
-                    <button id="save-khs" class="btn">Simpan Absensi KHS</button>
-                    <button id="reset-khs" class="btn btn-outline">Reset</button>
-                </div>
-            </div>
-        </div>
-        
-        <footer>
-            &copy; 2025 Sistem Absensi TQS-KHS | Dibangun dengan ❤️ untuk Pendidikan
-        </footer>
+  <div class="container">
+    <h1 class="center">Absensi MAHAD AL FARUQ ASSALAFY</h1>
+    <nav>
+      <button id="nav-dashboard" class="active" onclick="showPage('dashboard')">Dashboard</button>
+      <button id="nav-absensi" onclick="showPage('absensi')">Absensi</button>
+      <button id="nav-jurnal" onclick="showPage('jurnal')">Jurnal Kelas</button>
+      <button id="nav-halaqoh" onclick="showPage('halaqoh')">Absensi Halaqoh</button>
+      <button id="nav-report" onclick="showPage('report')">Laporan</button>
+      <button id="nav-logout" onclick="logout()" style="margin-left:auto;background:#d9534f;">Logout</button>
+    </nav>
+
+    <!-- LOGIN -->
+    <div id="login-section">
+      <h2>Login Admin</h2>
+      <form id="loginForm">
+        <label>Username</label>
+        <input type="text" id="username" required>
+        <label>Password</label>
+        <input type="password" id="password" required>
+        <button class="btn" type="submit">Login</button>
+      </form>
+      <div id="loginMsg"></div>
     </div>
 
-    <script>
-        // Data Mahasiswa
-        const students = {
-            tqs: [
-                "FUAD FIRDAUS",
-                "FAUZAN TAUFIQ",
-                "JABIR",
-                "AFFAN AL FARINSY",
-                "AL HARITS",
-                "AZMI AT TAMANI",
-                "MUHAMMAD ZUBAIR",
-                "JUNDI ABDULLAH",
-                "ABDUL HADI",
-                "YAHYA BJR",
-                "SUFYAN BIN AFIT",
-                "FAZA UBAIDILLAH",
-                "MUHAMMAD"
-            ],
-            khs: [
-                "ABDULLAH SERIWA",
-                "YODA AFRIZAL",
-                "DAWUD",
-                "ADAM ROFIF TSAQIF",
-                "MUHAMMAD SURYA BASKARAJATI",
-                "FARID",
-                "MUHAMMAD FAQQIH MUBAROK",
-                "YAHYA KRW",
-                "HAMMAAM",
-                "MUHAMMAD DZAKY MUMTAZ",
-                "UMAIR",
-                "DIMAS EKA NUGRAHA",
-                "MUHAMAD DENI MAULANA"
-            ]
-        };
+    <!-- DASHBOARD -->
+    <div id="dashboard-section" class="dashboard-section">
+      <h2>Dashboard</h2>
+      <ul>
+        <li>Absensi Kelas TQS & KHS</li>
+        <li>Jurnal Kelas sesuai jadwal pelajaran</li>
+        <li>Absensi Halaqoh (Mutawassitoh & Aliyah)</li>
+        <li>Laporan Real-time (terhubung Google Spreadsheet)</li>
+      </ul>
+    </div>
 
-        // Inisialisasi
-        document.addEventListener('DOMContentLoaded', function() {
-            // Update tanggal dan waktu
-            function updateDateTime() {
-                const now = new Date();
-                const options = { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                };
-                document.getElementById('current-date-time').textContent = 
-                    now.toLocaleDateString('id-ID', options);
-            }
-            
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-            
-            // Isi tabel mahasiswa
-            fillStudentTable('tqs');
-            fillStudentTable('khs');
-            
-            // Tab functionality
-            setupTabs();
-            
-            // Button events
-            document.getElementById('save-tqs').addEventListener('click', () => saveAttendance('tqs'));
-            document.getElementById('save-khs').addEventListener('click', () => saveAttendance('khs'));
-            document.getElementById('reset-tqs').addEventListener('click', () => resetForm('tqs'));
-            document.getElementById('reset-khs').addEventListener('click', () => resetForm('khs'));
-        });
-        
-        function fillStudentTable(kelas) {
-            const tableBody = document.querySelector(`#${kelas}-table tbody`);
-            tableBody.innerHTML = '';
-            
-            students[kelas].forEach((student, index) => {
-                const row = document.createElement('tr');
-                
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${student}</td>
+    <!-- ABSENSI KELAS -->
+    <div id="absensi-section" class="form-section hidden">
+      <h2>Absensi Kelas TQS & KHS</h2>
+      <form id="absensiForm">
+        <label>Pilih Kelas</label>
+        <select id="kelas" required onchange="renderSiswaAbsensi()">
+          <option value="" selected disabled>- Pilih Kelas -</option>
+          <option value="TQS Angkatan 05">TQS Angkatan 05</option>
+          <option value="KHS Angkatan 01">KHS Angkatan 01</option>
+        </select>
+        <div id="absensiSiswaWrap"></div>
+        <label>Tanggal</label>
+        <input type="date" id="absenTanggal" required value="">
+        <label>Sesi</label>
+        <select id="absenSesi" required>
+          <option value="" disabled selected>- Pilih Sesi -</option>
+          <option>06:15–07:00</option>
+          <option>08:45–09:30</option>
+          <option>10:00–10:45</option>
+          <option>10:45–11:30</option>
+          <option>Lainnya</option>
+        </select>
+        <button class="btn" type="submit">Kirim Absensi</button>
+      </form>
+      <div id="absenMsg"></div>
+    </div>
+
+    <!-- JURNAL KELAS -->
+    <div id="jurnal-section" class="journal-section hidden">
+      <h2>Jurnal Kelas</h2>
+      <form id="jurnalForm">
+        <label>Pilih Hari</label>
+        <select id="hariJurnal" onchange="renderJadwalPelajaran()">
+          <option value="" disabled selected>- Pilih Hari -</option>
+          <option>Sabtu</option>
+          <option>Ahad</option>
+          <option>Senin</option>
+          <option>Selasa</option>
+          <option>Rabu</option>
+          <option>Kamis</option>
+        </select>
+        <div id="jadwalPelajaranWrap"></div>
+        <label>Tanggal</label>
+        <input type="date" id="jurnalTanggal" required value="">
+        <button class="btn" type="submit">Simpan Jurnal</button>
+      </form>
+      <div id="jurnalMsg"></div>
+    </div>
+
+    <!-- ABSENSI HALAQOH -->
+    <div id="halaqoh-section" class="form-section hidden">
+      <h2>Absensi Halaqoh</h2>
+      <form id="halaqohForm">
+        <label>Pilih Tipe</label>
+        <select id="halaqohTipe" onchange="renderHalaqohSiswa()">
+          <option value="" selected disabled>- Pilih Tipe -</option>
+          <option value="Mutawassitoh">Mutawassitoh</option>
+          <option value="Aliyah">Aliyah</option>
+          <option value="Musammi">Musammi'</option>
+        </select>
+        <label>Pilih Kelas</label>
+        <select id="halaqohKelas" onchange="renderHalaqohSiswa()">
+          <option value="" selected disabled>- Pilih Kelas -</option>
+          <option value="1A">1A</option><option value="1B">1B</option><option value="1C">1C</option><option value="1D">1D</option>
+          <option value="2A">2A</option><option value="2B">2B</option>
+          <option value="3A">3A</option><option value="3B">3B</option><option value="3C">3C</option>
+        </select>
+        <div id="halaqohSiswaWrap"></div>
+        <label>Tanggal</label>
+        <input type="date" id="halaqohTanggal" required value="">
+        <label>Sesi</label>
+        <select id="halaqohSesi" required>
+          <option value="" disabled selected>- Pilih Sesi -</option>
+          <option>Bada Shubuh</option>
+          <option>08:00</option>
+          <option>Bada Ashar</option>
+          <option>Bada Isya</option>
+        </select>
+        <button class="btn" type="submit">Kirim Absensi</button>
+      </form>
+      <div id="halaqohMsg"></div>
+    </div>
+
+    <!-- LAPORAN -->
+    <div id="report-section" class="report-section hidden">
+      <h2>Laporan Absensi (Preview)</h2>
+      <button class="btn" onclick="getReport()">Refresh Data</button>
+      <div id="reportData"></div>
+    </div>
+  </div>
+
+  <script>
+    // ========== ADMIN LOGIN ==========
+    const ADMIN_CREDENTIALS = [
+      {username:'admin', password:'mahad2025'},
+      {username:'jundi005', password:'lajnahquran'}
+    ];
+    function isLoggedIn() {
+      return sessionStorage.getItem('isLogin')==='yes';
+    }
+    function showPage(page) {
+      if(!isLoggedIn() && page!=='dashboard') {
+        showLogin();
+        return;
+      }
+      document.querySelectorAll('nav button').forEach(btn=>btn.classList.remove('active'));
+      document.getElementById('nav-'+page).classList.add('active');
+      ['dashboard','absensi','jurnal','halaqoh','report'].forEach(sec=>{
+        document.getElementById(sec+'-section').classList.add('hidden');
+      });
+      document.getElementById(page+'-section').classList.remove('hidden');
+      document.getElementById('login-section').classList.add('hidden');
+    }
+    function showLogin() {
+      document.querySelectorAll('.dashboard-section,.form-section,.journal-section,.report-section').forEach(div=>div.classList.add('hidden'));
+      document.getElementById('login-section').classList.remove('hidden');
+      document.querySelectorAll('nav button').forEach(btn=>btn.classList.remove('active'));
+      document.getElementById('nav-dashboard').classList.add('active');
+    }
+    document.getElementById('loginForm').onsubmit = function(e) {
+      e.preventDefault();
+      let u = document.getElementById('username').value.trim();
+      let p = document.getElementById('password').value.trim();
+      let ok = ADMIN_CREDENTIALS.some(a=>a.username===u && a.password===p);
+      if(ok) {
+        sessionStorage.setItem('isLogin','yes');
+        showPage('dashboard');
+        document.getElementById('loginMsg').textContent = '';
+      } else {
+        document.getElementById('loginMsg').textContent = 'Username/Password salah!';
+      }
+    }
+    function logout() {
+      sessionStorage.removeItem('isLogin');
+      showLogin();
+    }
+    if(!isLoggedIn()) showLogin();
+
+    // ========== DATA SISWA ==========
+    const SISWA_TQS = [
+      "Fuad Firdaus","Fauzan Taufiq","Jabir","Affan Al Farinsy","Al Harits","Azmi At Tamani","Muhammad Zubair",
+      "Jundi Abdullah","Abdul Hadi","Yahya","Sufyan bin Afit","Faza Ubaidillah","Muhammad"
+    ];
+    const SISWA_KHS = [
+      "Abdullah Seriwa","Yoda Afrizal","Dawud","Adam Rofif Tsaqif","Muhammad Surya Baskarajati","Farid",
+      "Muhammad Faqqih Mubarok","Yahya","Hafizh","Hammaam","Muhammad Dzaky Mumtaz","Umair","Dimas Eka Nugraha","Muhamad Deni Maulana"
+    ];
+    // Halaqoh
+    const H_Mutawassitoh = {
+      "1A":["nama1","nama2"],"1B":["nama3"],"1D":["nama4"],"2A":["nama5"],"2B":["nama6"],"3A":["nama7"],"3B":["nama8"],"3C":["nama9"]
+    };
+    const H_Aliyah = {
+      "1A":["aliyah1"],"1B":["aliyah2"],"1C":["aliyah3"],"2A":["aliyah4"],"2B":["aliyah5"],"3A":["aliyah6"],"3B":["aliyah7"]
+    };
+    const H_Musammi = {
+      "Jamii":["jamii1","jamii2"],"Aliyah":["aliyah1","aliyah2"]
+    };
+    // --- Replace the dummy names above with actual names as needed. ---
+
+    // ========== ABSENSI FORM ==========
+    function renderSiswaAbsensi() {
+      let kelas = document.getElementById('kelas').value;
+      let siswa = kelas === 'TQS Angkatan 05' ? SISWA_TQS : (kelas==='KHS Angkatan 01' ? SISWA_KHS : []);
+      let out = '';
+      if(siswa.length) {
+        out = `<table class="absen-table"><tr><th>Nama</th><th>Kehadiran</th></tr>`;
+        siswa.forEach(nama=>{
+          out += `<tr>
+                    <td>${nama}</td>
                     <td>
-                        <select class="status-select" data-name="${student}">
-                            <option value="present">Hadir</option>
-                            <option value="absent">Tidak Hadir</option>
-                            <option value="sick">Sakit</option>
-                            <option value="permit">Izin</option>
-                        </select>
+                      <select name="absen_${nama.replace(/\s+/g,'_')}">
+                        <option selected>Hadir</option>
+                        <option>Alpa</option>
+                        <option>Izin</option>
+                        <option>Sakit</option>
+                      </select>
                     </td>
-                    <td><input type="text" class="note" data-name="${student}" placeholder="Keterangan"></td>
-                `;
-                
-                tableBody.appendChild(row);
-            });
-        }
-        
-        function setupTabs() {
-            const tabs = document.querySelectorAll('.tab');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Remove active class from all tabs and contents
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                    
-                    // Add active class to clicked tab and corresponding content
-                    tab.classList.add('active');
-                    const tabId = tab.getAttribute('data-tab');
-                    document.getElementById(`${tabId}-content`).classList.add('active');
-                });
-            });
-        }
-        
-        function saveAttendance(kelas) {
-            const pertemuan = document.getElementById('pertemuan').value;
-            const waktu = document.getElementById('waktu').value;
-            const topik = document.getElementById('topik').value;
-            const date = new Date().toISOString().split('T')[0];
-            
-            const attendanceData = [];
-            const rows = document.querySelectorAll(`#${kelas}-table tbody tr`);
-            
-            rows.forEach(row => {
-                const name = row.querySelector('.status-select').getAttribute('data-name');
-                const status = row.querySelector('.status-select').value;
-                const note = row.querySelector('.note').value;
-                
-                attendanceData.push({
-                    kelas: kelas.toUpperCase(),
-                    nama: name,
-                    pertemuan,
-                    tanggal: date,
-                    waktu,
-                    topik,
-                    status,
-                    keterangan: note
-                });
-            });
-            
-            // Kirim data ke Google Sheets
-            sendToGoogleSheets(attendanceData, kelas);
-        }
-        
-        function resetForm(kelas) {
-            const selects = document.querySelectorAll(`#${kelas}-table .status-select`);
-            const notes = document.querySelectorAll(`#${kelas}-table .note`);
-            
-            selects.forEach(select => {
-                select.value = 'present';
-            });
-            
-            notes.forEach(note => {
-                note.value = '';
-            });
-            
-            Swal.fire({
-                icon: 'success',
-                title: 'Form direset',
-                text: `Data absensi ${kelas.toUpperCase()} telah direset ke default`,
-                timer: 1500,
-                showConfirmButton: false
-            });
-        }
-        
-        function sendToGoogleSheets(data, kelas) {
-            // Ganti dengan URL Apps Script Anda
-            const scriptUrl = 'https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbxOloC4j2OCYe6Ph-M-868lawuchex5MNG8Y-heJNylFboclpksAxmHB7sSL4C5SJNFeQ/exec';
-            
-            fetch(scriptUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(() => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: `Absensi ${kelas.toUpperCase()} berhasil disimpan di Google Sheets`,
-                    confirmButtonText: 'OK'
-                });
-            })
-            .catch(error => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal',
-                    text: 'Terjadi kesalahan saat menyimpan data: ' + error,
-                    confirmButtonText: 'OK'
-                });
-            });
-        }
-    </script>
+                  </tr>`;
+        });
+        out += '</table>';
+      }
+      document.getElementById('absensiSiswaWrap').innerHTML = out;
+    }
+    document.getElementById('absensiForm').onsubmit = function(e) {
+      e.preventDefault();
+      let kelas = document.getElementById('kelas').value;
+      let siswa = kelas === 'TQS Angkatan 05' ? SISWA_TQS : (kelas==='KHS Angkatan 01' ? SISWA_KHS : []);
+      if(!kelas||!siswa.length){alert('Pilih kelas!');return;}
+      let tgl = document.getElementById('absenTanggal').value;
+      let sesi = document.getElementById('absenSesi').value;
+      let data = siswa.map(nama=>{
+        let absen = document.querySelector(`[name="absen_${nama.replace(/\s+/g,'_')}"]`).value;
+        return {nama,absen};
+      });
+      sendToSheet('absensi', {kelas,tgl,sesi,data});
+      document.getElementById('absenMsg').innerHTML = '<span class="success">Terkirim!</span>';
+      setTimeout(()=>document.getElementById('absenMsg').innerHTML='',2000);
+    }
+
+    // ========== JURNAL KELAS ==========
+    const JADWAL = {
+      "Sabtu":[["08:00–08:45","Ta’dzimussunnah"],["10:00–10:45","Shohih Bukhori"]],
+      "Ahad":[["06:30–07:00","Tafsir"]],
+      "Senin":[["06:30–07:00","Mustholah"],["08:00–08:45","Ushul Iman"],["10:00–10:45","Al Muharror"],["10:45–11:30","Tadwinussunnah"],["12:30–13:15","Tajwid"]],
+      "Selasa":[["06:30–07:00","Manhajul Bahts"],["08:00–08:45","Ta’dzimussunnah"],["10:00–10:45","Shohih Bukhori"],["10:45–11:30","Tafsir"],["12:30–13:15","Tajwid"]],
+      "Rabu":[["06:30–07:00","Mustholah"],["08:00–08:45","Bidayatul Mujtahid"],["10:00–10:45","Al Muharror"],["10:45–11:30","Tadwinussunnah"],["12:30–13:15","Tajwid"]],
+      "Kamis":[["06:30–07:00","Mustholah"],["08:00–08:45","Ushul Iman"],["10:00–10:45","Bidayatul Mujtahid"],["10:45–11:30","Tafsir"],["12:30–13:15","Tajwid"]],
+    };
+    function renderJadwalPelajaran() {
+      let hari = document.getElementById('hariJurnal').value;
+      let out = '';
+      if(JADWAL[hari]) {
+        out = `<table class="journal-table"><tr><th>Jam</th><th>Pelajaran</th><th>Masuk</th></tr>`;
+        JADWAL[hari].forEach(([jam,pel],i)=>{
+          out += `<tr>
+                    <td>${jam}</td>
+                    <td>${pel}</td>
+                    <td>
+                      <select name="jurnalMasuk${i}">
+                        <option selected>Masuk</option>
+                        <option>Tidak Masuk</option>
+                      </select>
+                    </td>
+                  </tr>`;
+        });
+        out += '</table>';
+      }
+      document.getElementById('jadwalPelajaranWrap').innerHTML = out;
+    }
+    document.getElementById('jurnalForm').onsubmit = function(e) {
+      e.preventDefault();
+      let hari = document.getElementById('hariJurnal').value;
+      let tgl = document.getElementById('jurnalTanggal').value;
+      let data = [];
+      if(JADWAL[hari]) {
+        JADWAL[hari].forEach(([jam,pel],i)=>{
+          let masuk = document.querySelector(`[name="jurnalMasuk${i}"]`).value;
+          data.push({jam,pel,masuk});
+        });
+      }
+      sendToSheet('jurnal', {hari,tgl,data});
+      document.getElementById('jurnalMsg').innerHTML = '<span class="success">Tersimpan!</span>';
+      setTimeout(()=>document.getElementById('jurnalMsg').innerHTML='',2000);
+    }
+
+    // ========== ABSENSI HALAQOH ==========
+    function renderHalaqohSiswa() {
+      let tipe = document.getElementById('halaqohTipe').value;
+      let kelas = document.getElementById('halaqohKelas').value;
+      let siswa = [];
+      if(tipe==="Mutawassitoh" && H_Mutawassitoh[kelas]) siswa = H_Mutawassitoh[kelas];
+      else if(tipe==="Aliyah" && H_Aliyah[kelas]) siswa = H_Aliyah[kelas];
+      else if(tipe==="Musammi" && H_Musammi[kelas]) siswa = H_Musammi[kelas];
+      let out = '';
+      if(siswa.length) {
+        out = `<table class="absen-table"><tr><th>Nama</th><th>Kehadiran</th></tr>`;
+        siswa.forEach(nama=>{
+          out += `<tr>
+                    <td>${nama}</td>
+                    <td>
+                      <select name="halaqoh_${nama.replace(/\s+/g,'_')}">
+                        <option selected>Hadir</option>
+                        <option>Alpa</option>
+                        <option>Izin</option>
+                        <option>Sakit</option>
+                      </select>
+                    </td>
+                  </tr>`;
+        });
+        out += '</table>';
+      }
+      document.getElementById('halaqohSiswaWrap').innerHTML = out;
+    }
+    document.getElementById('halaqohForm').onsubmit = function(e){
+      e.preventDefault();
+      let tipe = document.getElementById('halaqohTipe').value;
+      let kelas = document.getElementById('halaqohKelas').value;
+      let tgl = document.getElementById('halaqohTanggal').value;
+      let sesi = document.getElementById('halaqohSesi').value;
+      let siswa = [];
+      if(tipe==="Mutawassitoh" && H_Mutawassitoh[kelas]) siswa = H_Mutawassitoh[kelas];
+      else if(tipe==="Aliyah" && H_Aliyah[kelas]) siswa = H_Aliyah[kelas];
+      else if(tipe==="Musammi" && H_Musammi[kelas]) siswa = H_Musammi[kelas];
+      let data = siswa.map(nama=>{
+        let absen = document.querySelector(`[name="halaqoh_${nama.replace(/\s+/g,'_')}"]`).value;
+        return {nama,absen};
+      });
+      sendToSheet('halaqoh', {tipe,kelas,tgl,sesi,data});
+      document.getElementById('halaqohMsg').innerHTML = '<span class="success">Terkirim!</span>';
+      setTimeout(()=>document.getElementById('halaqohMsg').innerHTML='',2000);
+    }
+
+    // ========== GOOGLE SHEET INTEGRATION ==========
+    const SHEET_URL = "https://script.google.com/macros/s/AKfycbxUu4mYkSqyqDlAgw7vn9Tx5owx-umTZCGSDHWBooF78IL1b6skzQEBnhKeYAdV1d9WWg/exec";
+    function sendToSheet(type, data) {
+      // CORS aman karena menggunakan Google Apps Script web app dengan response mode 'no-cors' atau 'cors' diset di Apps Scriptnya.
+      fetch(SHEET_URL, {
+        method: "POST",
+        mode: "no-cors", // agar tidak error CORS di browser
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({type, ...data})
+      });
+    }
+
+    // ========== LAPORAN ==========
+    function getReport(){
+      document.getElementById('reportData').innerHTML = "Memuat data...";
+      fetch(SHEET_URL+"?type=report")
+      .then(r=>r.json())
+      .then(d=>{
+        if(!Array.isArray(d)) throw new Error("Format data tidak dikenali");
+        let out = `<table class="report-table"><tr>`;
+        let keys = Object.keys(d[0]||{});
+        keys.forEach(k=>out+=`<th>${k}</th>`);
+        out += "</tr>";
+        d.forEach(row=>{
+          out += "<tr>";
+          keys.forEach(k=>out+=`<td>${row[k]}</td>`);
+          out += "</tr>";
+        });
+        out += "</table>";
+        document.getElementById('reportData').innerHTML = out;
+      }).catch(_=>{
+        document.getElementById('reportData').innerHTML = "<span class='error'>Gagal mengambil data laporan. Silakan cek koneksi atau Apps Script.</span>";
+      });
+    }
+
+    // ========== INIT ==========
+    document.getElementById('absenTanggal').value = document.getElementById('jurnalTanggal').value = document.getElementById('halaqohTanggal').value = (new Date()).toISOString().substr(0,10);
+  </script>
 </body>
 </html>
